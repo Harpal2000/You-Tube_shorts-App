@@ -12,11 +12,10 @@ This is a single-page application that mimics the basic functionality of YouTube
 
 1. Clone the repository:
 
-   ```bash
-   git clone https://github.com/your-username/youtube-shorts-app.git
-   cd youtube-shorts-app
-
-   ```
+```bash
+git clone https://github.com/your-username/youtube-shorts-app.git
+cd youtube-shorts-app
+```
 
 2. Install dependencies:
 

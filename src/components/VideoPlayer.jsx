@@ -21,18 +21,47 @@ const VideoPlayer = ({ videoUrl, title }) => {
     setIsPlaying(isVisible);
   }, 100);
 
+  const handleTouchStart = (e) => {
+    const touchStartY = e.touches[0].clientY;
+    document.addEventListener("touchmove", handleTouchMove);
+    document.addEventListener("touchend", handleTouchEnd);
+
+    function handleTouchMove(e) {
+      const deltaY = e.touches[0].clientY - touchStartY;
+      setIsPlaying(deltaY > 0);
+    }
+
+    function handleTouchEnd() {
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleTouchEnd);
+    }
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+      setIsPlaying(event.key === "ArrowDown");
+    }
+  };
+
   useEffect(() => {
     document.addEventListener("visibilitychange", handleVisibilityChange);
     window.addEventListener("scroll", handleScroll);
+    window.addEventListener("keydown", handleKeyPress);
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("keydown", handleKeyPress);
     };
   }, []);
 
   return (
-    <div className="video-player" ref={playerRef}>
+    <div
+      className="video-player"
+      ref={playerRef}
+      onTouchStart={handleTouchStart}
+      tabIndex={0}
+    >
       <div className="display-videos">
         <ReactPlayer
           url={videoUrl}
